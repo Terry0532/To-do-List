@@ -2,7 +2,7 @@ const db = require("../../models");
 const router = require("express").Router();
 
 router.post("/", (req, res) => {
-    console.log(req.body);
+    console.log(req.body)
     db.todos.create({
         progress: req.body.progress,
         content: req.body.content
