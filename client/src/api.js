@@ -14,6 +14,6 @@ export default {
 
     },
     allTodos: () => {
-        
+        return axios.post("/api/all");
     }
 }
