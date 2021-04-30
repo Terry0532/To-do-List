@@ -35,6 +35,14 @@ class App extends React.Component {
     this.setState({ todo: "" });
   }
 
+  deleteTodo = (id) => {
+    API.deleteTodo(id).then(res => {
+      this.componentDidMount();
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
   render() {
     return (
       <div>
@@ -44,9 +52,12 @@ class App extends React.Component {
         <table>
           <tbody>
             {this.state.todolist.map(todo => (
-              <tr>
-                <td>{todo.content}</td>
-              </tr>
+              <React.Fragment key={todo.id}>
+                <tr>
+                  <td>{todo.content}</td>
+                  <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
+                </tr>
+              </React.Fragment>
             ))}
           </tbody>
         </table>

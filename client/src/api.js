@@ -2,10 +2,10 @@ import axios from "axios";
 
 export default {
     addTodo: content => {
-        return axios.post("/api/add", {content: content});
+        return axios.post("/api/add", { content: content });
     },
     deleteTodo: id => {
-
+        return axios.post("/api/delete", { id: id });
     },
     editTodo: content => {
 
@@ -17,6 +17,6 @@ export default {
         return axios.post("/api/all");
     },
     clearAll: () => {
-        
+
     }
 }
