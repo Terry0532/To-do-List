@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export default {
-    addTodo: data => {
-
+    addTodo: content => {
+        return axios.post("/api/add", {content: content});
     },
     deleteTodo: id => {
 

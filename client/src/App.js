@@ -24,7 +24,12 @@ class App extends React.Component {
   }
 
   addTodo = () => {
-    console.log(this.state.todo)
+    API.addTodo(this.state.todo).then(res => {
+      //reload todo list
+      this.componentDidMount();
+    }).catch(err => {
+      console.log(err);
+    })
 
     //clear user input after click add button
     this.setState({ todo: "" });
