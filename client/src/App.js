@@ -1,12 +1,15 @@
 import React from "react";
 import API from "../src/api";
 import "./App.css";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 class App extends React.Component {
   state = {
     todolist: [],
     todo: "",
-    hideButton: "none"
+    hideButton: "none",
+    editodo: ""
   }
 
   componentDidMount() {
@@ -24,9 +27,14 @@ class App extends React.Component {
     });
   }
 
-  handleInputChange = e => {
-    //save user input
+  addTodoInput = e => {
+    //save user input to add todo
     this.setState({ todo: e.target.value });
+  }
+
+  editodoInput = e => {
+    //save user input to edit todo
+    this.setState({ editodo: e.target.value });
   }
 
   addTodo = () => {
@@ -65,10 +73,18 @@ class App extends React.Component {
     });
   }
 
+  editTodo = (id) => {
+    API.editTodo(this.state.editodo, id).then(() => {
+      this.componentDidMount();
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+
   render() {
     return (
       <div>
-        <textarea onChange={this.handleInputChange} value={this.state.todo}></textarea>
+        <textarea onChange={this.addTodoInput} value={this.state.todo}></textarea>
         <button onClick={this.addTodo}>add</button>
         <button style={{ display: this.state.hideButton }} onClick={this.clearAllCompletedTodos}>clear all</button>
         <p>List:</p>
@@ -83,8 +99,25 @@ class App extends React.Component {
                         <td>{todo.content}</td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
                         <td><button onClick={() => this.completeTodo(todo.id)}>complete</button></td>
+                        <td>
+                          <Popup trigger={<button>edit</button>} modal>
+                            {close => (
+                              <div>
+                                <button onClick={close}>&times;</button>
+                                <br></br>
+                                <textarea onChange={this.editodoInput}></textarea>
+                                <div>
+                                  <button onClick={() => {
+                                    this.editTodo(todo.id);
+                                    close();
+                                  }}>submit</button>
+                                </div>
+                              </div>
+                            )}
+                          </Popup>
+                        </td>
                       </React.Fragment>
-                      : <React.Fragment></React.Fragment>
+                      : null
                   }
                 </tr>
               </React.Fragment>
@@ -98,7 +131,7 @@ class App extends React.Component {
                         <td><del>{todo.content}</del></td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
                       </React.Fragment>
-                      : <React.Fragment></React.Fragment>
+                      : null
                   }
                 </tr>
               </React.Fragment>

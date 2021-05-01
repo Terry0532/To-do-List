@@ -7,8 +7,8 @@ export default {
     deleteTodo: id => {
         return axios.post("/api/delete", { id: id });
     },
-    editTodo: content => {
-
+    editTodo: (content, id) => {
+        return axios.post("/api/edit", { content: content, id: id });
     },
     completeTodo: id => {
         return axios.post("/api/complete", { id: id });
