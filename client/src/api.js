@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default {
+const API = {
     addTodo: content => {
         return axios.post("/api/add", { content: content });
     },
@@ -20,3 +20,5 @@ export default {
         return axios.post("/api/clear");
     }
 }
+
+export default API;
