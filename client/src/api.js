@@ -11,7 +11,7 @@ export default {
 
     },
     completeTodo: id => {
-
+        return axios.post("/api/complete", { id: id });
     },
     allTodos: () => {
         return axios.post("/api/all");

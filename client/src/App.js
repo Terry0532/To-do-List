@@ -24,7 +24,7 @@ class App extends React.Component {
   }
 
   addTodo = () => {
-    API.addTodo(this.state.todo).then(res => {
+    API.addTodo(this.state.todo).then(() => {
       //reload todo list
       this.componentDidMount();
     }).catch(err => {
@@ -36,7 +36,15 @@ class App extends React.Component {
   }
 
   deleteTodo = (id) => {
-    API.deleteTodo(id).then(res => {
+    API.deleteTodo(id).then(() => {
+      this.componentDidMount();
+    }).catch(err => {
+      console.log(err);
+    })
+  }
+
+  completeTodo = (id) => {
+    API.completeTodo(id).then(() => {
       this.componentDidMount();
     }).catch(err => {
       console.log(err);
@@ -54,8 +62,29 @@ class App extends React.Component {
             {this.state.todolist.map(todo => (
               <React.Fragment key={todo.id}>
                 <tr>
-                  <td>{todo.content}</td>
-                  <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
+                  {
+                    todo.progress === "0"
+                      ? <React.Fragment>
+                        <td>{todo.content}</td>
+                        <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
+                        <td><button onClick={() => this.completeTodo(todo.id)}>complete</button></td>
+                      </React.Fragment>
+                      : <div></div>
+                  }
+                </tr>
+              </React.Fragment>
+            ))}
+            {this.state.todolist.map(todo => (
+              <React.Fragment key={todo.id}>
+                <tr>
+                  {
+                    todo.progress === "1"
+                      ? <React.Fragment>
+                        <td><del>{todo.content}</del></td>
+                        <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
+                      </React.Fragment>
+                      : <div></div>
+                  }
                 </tr>
               </React.Fragment>
             ))}
