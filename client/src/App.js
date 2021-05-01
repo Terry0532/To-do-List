@@ -5,17 +5,23 @@ import "./App.css";
 class App extends React.Component {
   state = {
     todolist: [],
-    todo: ""
+    todo: "",
+    hideButton: "none"
   }
 
   componentDidMount() {
     //get all todos and print it
     API.allTodos().then(res => {
       this.setState({ todolist: res.data });
-      console.log(this.state.todolist)
+      //if there is completed todo item, show clear all button
+      if (this.state.todolist.some(element => element.progress === "1")) {
+        this.setState({ hideButton: "" });
+      } else {
+        this.setState({ hideButton: "none" });
+      }
     }).catch(err => {
       console.log(err);
-    })
+    });
   }
 
   handleInputChange = e => {
@@ -29,7 +35,7 @@ class App extends React.Component {
       this.componentDidMount();
     }).catch(err => {
       console.log(err);
-    })
+    });
 
     //clear user input after click add button
     this.setState({ todo: "" });
@@ -40,7 +46,7 @@ class App extends React.Component {
       this.componentDidMount();
     }).catch(err => {
       console.log(err);
-    })
+    });
   }
 
   completeTodo = (id) => {
@@ -48,7 +54,15 @@ class App extends React.Component {
       this.componentDidMount();
     }).catch(err => {
       console.log(err);
-    })
+    });
+  }
+
+  clearAllCompletedTodos = () => {
+    API.clearAll().then(() => {
+      this.componentDidMount();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   render() {
@@ -56,6 +70,7 @@ class App extends React.Component {
       <div>
         <textarea onChange={this.handleInputChange} value={this.state.todo}></textarea>
         <button onClick={this.addTodo}>add</button>
+        <button style={{ display: this.state.hideButton }} onClick={this.clearAllCompletedTodos}>clear all</button>
         <p>List:</p>
         <table>
           <tbody>
@@ -69,7 +84,7 @@ class App extends React.Component {
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
                         <td><button onClick={() => this.completeTodo(todo.id)}>complete</button></td>
                       </React.Fragment>
-                      : <div></div>
+                      : <React.Fragment></React.Fragment>
                   }
                 </tr>
               </React.Fragment>
@@ -83,7 +98,7 @@ class App extends React.Component {
                         <td><del>{todo.content}</del></td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
                       </React.Fragment>
-                      : <div></div>
+                      : <React.Fragment></React.Fragment>
                   }
                 </tr>
               </React.Fragment>

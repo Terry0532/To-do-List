@@ -17,6 +17,6 @@ export default {
         return axios.post("/api/all");
     },
     clearAll: () => {
-
+        return axios.post("/api/clear");
     }
 }
