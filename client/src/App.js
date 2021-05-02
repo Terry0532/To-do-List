@@ -17,7 +17,7 @@ class App extends React.Component {
     API.allTodos().then(res => {
       this.setState({ todolist: res.data });
       //if there is completed todo item, show clear all button
-      if (this.state.todolist.some(element => element.progress === "1")) {
+      if (this.state.todolist.some(element => element.progress === 1)) {
         this.setState({ hideButton: "" });
       } else {
         this.setState({ hideButton: "none" });
@@ -94,7 +94,7 @@ class App extends React.Component {
               <React.Fragment key={todo.id}>
                 <tr>
                   {
-                    todo.progress === "0"
+                    todo.progress === 0
                       ? <React.Fragment>
                         <td>{todo.content}</td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
@@ -126,7 +126,7 @@ class App extends React.Component {
               <React.Fragment key={todo.id}>
                 <tr>
                   {
-                    todo.progress === "1"
+                    todo.progress === 1
                       ? <React.Fragment>
                         <td><del>{todo.content}</del></td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
