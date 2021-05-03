@@ -9,7 +9,10 @@ class App extends React.Component {
     todolist: [],
     todo: "",
     hideButton: "none",
-    editodo: ""
+    editodo: "",
+    pending: true,
+    completed: true,
+    status: "all todos"
   }
 
   componentDidMount() {
@@ -81,20 +84,51 @@ class App extends React.Component {
     });
   }
 
+  filter = (button) => {
+    if (button === 0) {
+      this.setState({
+        completed: false,
+        pending: true,
+        status: "pending todos"
+      });
+      this.componentDidMount();
+    }
+    if (button === 1) {
+      this.setState({
+        completed: true,
+        pending: false,
+        status: "completed todos"
+      });
+      this.componentDidMount();
+    }
+    if (button === 2) {
+      this.setState({
+        completed: true,
+        pending: true,
+        status: "all todos"
+      });
+      this.componentDidMount();
+    }
+  }
+
   render() {
     return (
       <div>
         <textarea onChange={this.addTodoInput} value={this.state.todo}></textarea>
         <button onClick={this.addTodo}>add</button>
         <button style={{ display: this.state.hideButton }} onClick={this.clearAllCompletedTodos}>clear all</button>
-        <p>List:</p>
+        <br></br>
+        <button onClick={() => this.filter(0)}>pending</button>
+        <button onClick={() => this.filter(1)}>completed</button>
+        <button onClick={() => this.filter(2)}>all</button>
+        <p>{this.state.status}</p>
         <table>
           <tbody>
             {this.state.todolist.map(todo => (
               <React.Fragment key={todo.id}>
                 <tr>
                   {
-                    todo.progress === 0
+                    todo.progress === 0 && this.state.pending === true
                       ? <React.Fragment>
                         <td>{todo.content}</td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
@@ -126,7 +160,7 @@ class App extends React.Component {
               <React.Fragment key={todo.id}>
                 <tr>
                   {
-                    todo.progress === 1
+                    todo.progress === 1 && this.state.completed === true
                       ? <React.Fragment>
                         <td><del>{todo.content}</del></td>
                         <td><button onClick={() => this.deleteTodo(todo.id)}>delete</button></td>
