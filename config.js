@@ -1,17 +1,17 @@
 module.exports = {
     development: {
-        username: "root",
-        password: "password",
-        database: "todolist",
-        host: "127.0.0.1",
+        username: process.env.development_username,
+        password: process.env.development_password,
+        database: process.env.development_database,
+        host: process.env.development_host,
         port: 3306,
         dialect: "mysql"
     },
     production: {
-        username: "root",
-        password: "todolist",
-        database: "todolist",
-        host: "database-2.cd17p770hwyy.us-east-2.rds.amazonaws.com",
+        username: process.env.production_username,
+        password: process.env.production_password,
+        database: process.env.production_database,
+        host: process.env.production_host,
         port: 3306,
         dialect: "mysql"
     }
